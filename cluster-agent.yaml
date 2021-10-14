@@ -1,0 +1,29 @@
+apiVersion: appdynamics.com/v1alpha1
+kind: Clusteragent
+metadata:
+  name: k8s-cluster-agent
+  namespace: appdynamics
+spec:
+  appName: AWS-Cluster
+  controllerUrl: "http://activesec.saas.appdynamics.com"
+  account: "activesec"
+  # docker image info
+  image: "docker.io/appdynamics/cluster-agent:latest"
+  serviceAccountName: appdynamics-cluster-agent
+  nsToMonitorRegex: .*
+  ### Uncomment the following line if you need pull secret
+  #imagePullSecret: "<your-docker-pull-secret-name>"
+  #
+  stdoutLogging: "true"
+  #
+  # auto-instrumentation config
+  #
+  instrumentationMethod: Env
+  nsToInstrumentRegex: bdr.*
+  defaultAppName: BDR-EKS
+  instrumentationRules:
+    - language: java
+      imageInfo:
+        image: docker.io/appdynamics/java-agent:latest
+        agentMountPath: /opt/appdynamics
+
